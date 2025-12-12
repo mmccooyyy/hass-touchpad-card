@@ -7,6 +7,17 @@ let length = 0
 let threshold = 1
 let cb = function(){}
 
+// Haptic feedback function
+function triggerHaptic(type = 'light') {
+  // Fire haptic event for Home Assistant Companion app
+  const event = new Event('haptic', {
+    bubbles: true,
+    composed: true
+  });
+  event.detail = type;
+  window.dispatchEvent(event);
+}
+
 let touchStartListener = function(e) {
   const touch = e.touches[0]
   startX = touch.pageX
@@ -28,11 +39,13 @@ let touchMoveListener = function(e) {
       if (diffX < 0) {
         if (length >= threshold) {
           length = 0
+          triggerHaptic('light') // Add haptic feedback
           cb('left')
         }
       } else {
         if (length >= threshold) {
           length = 0
+          triggerHaptic('light') // Add haptic feedback
           cb('right')
         }
       }
@@ -40,11 +53,13 @@ let touchMoveListener = function(e) {
       if (diffY < 0) {
         if (length >= threshold) {
           length = 0
+          triggerHaptic('light') // Add haptic feedback
           cb('up')
         }
       } else {
         if (length >= threshold) {
           length = 0
+          triggerHaptic('light') // Add haptic feedback
           cb('down')
         }
       }
@@ -58,6 +73,7 @@ let touchEndListener = function() {
 }
 
 let clickListener = function() {
+  triggerHaptic('medium') // Add haptic feedback for click
   cb('click')
 }
 
